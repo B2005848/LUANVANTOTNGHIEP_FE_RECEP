@@ -216,7 +216,7 @@
                   </span>
                 </td>
                 <td class="px-6 py-4">
-                  <span v-if="!data.status === 'CO-P'">
+                  <span v-if="data.status !== 'CO-P'">
                     <select
                       v-model="data.selectedAction"
                       @change="
@@ -229,8 +229,10 @@
                       class="tw-border tw-p-2 tw-rounded"
                     >
                       <option value="">Chọn hành động</option>
+                      <option selected class="text-success" value="CO-F">
+                        Xác nhận
+                      </option>
                       <option value="C-IN">Đã đến</option>
-                      <option value="CO-F">Xác nhận</option>
                       <option value="NO-S">Không đến</option>
                       <option value="CA">Hủy</option>
                       <!-- Thêm các lựa chọn khác nếu cần -->
@@ -339,11 +341,15 @@ const updateAppointmentStatus = async (
         Swal.fire(
           "Thành công!",
           `Lịch hẹn đã được ${
-            action === "C-IN"
+            action === "CO-F"
               ? "xác nhận"
               : action === "CA"
               ? "hủy"
-              : "dời lịch"
+              : action === "C-IN"
+              ? "xác nhận bệnh nhân đã đến khám"
+              : action === "NO-S"
+              ? "xác nhận bệnh nhân 'KHÔNG ĐẾN HẸN với'"
+              : ""
           }.`,
           "success"
         );

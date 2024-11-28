@@ -26,6 +26,16 @@ const recep = [
         },
       },
 
+      // TẠO LỊCH HẸN
+      {
+        path: "create_appointment_managements",
+        name: "create_recep.appointment",
+        component: () => import("../layouts/booking_page.vue"),
+        meta: {
+          title: "CTU CLINIC - Quản lí lịch hẹn",
+        },
+      },
+
       {
         path: "patients_managements/:id",
         name: "recep.patients",

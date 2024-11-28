@@ -62,7 +62,7 @@ a:focus {
         size="sm"
         class="me-2"
       />
-      <router-link :to="{ name: 'recep.appointment' }"
+      <router-link :to="{ name: 'create_recep.appointment' }"
         >TẠO LỊCH HẸN
       </router-link>
     </li>

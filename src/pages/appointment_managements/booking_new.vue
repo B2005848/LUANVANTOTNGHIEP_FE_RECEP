@@ -12,7 +12,7 @@
             </label>
             <input
               type="text"
-              v-model="patientData.patient_id"
+              v-model="patientData.username"
               placeholder="Email hoặc số điện thoại"
               class="form-control"
               id="patient_id"
@@ -275,7 +275,7 @@ import "@vuepic/vue-datepicker/dist/main.css";
 const router = useRouter();
 // Dữ liệu bệnh nhân
 const patientData = ref({
-  patient_id: "", // patient ID (phone number)
+  username: "", // patient ID (phone number)
   first_name: "", // First name
   last_name: "", // Last name
   birthday: "", // Birthday (format may need adjustment)
@@ -320,7 +320,7 @@ const addpatient = async () => {
   // Tạo dữ liệu cho tài khoản, và thông tin chi tiết từ các trường form
   const accountData = [
     {
-      patient_id: patientData.value.patient_id,
+      username: patientData.value.patient_id,
       password: "123@", //Mặc khẩu mặc định
       first_name: patientData.value.first_name,
       last_name: patientData.value.last_name,
@@ -340,7 +340,7 @@ const addpatient = async () => {
   ];
   try {
     const responseCreateAccount = await axios.post(
-      "http://localhost:3000/api/staff/account/createAccount",
+      "http://localhost:3000/api/patient/account/create",
       accountData
     );
 
@@ -351,7 +351,7 @@ const addpatient = async () => {
       {
         Swal.fire({
           title: "Thành công!",
-          text: "Bệnh Nhânmới đã được thêm",
+          text: "Bệnh Nhân mới đã được thêm",
           icon: "success",
           showCancelButton: true,
           confirmButtonText: "OK",
@@ -364,9 +364,6 @@ const addpatient = async () => {
               name: "admin.create_staff_shift",
               params: { patient_id: patientData.value.patient_id },
             });
-            console.log(
-              `Chuẩn bị sắp xếp ca làm việc cho Bệnh Nhân mới này ${patientData.value.patient_id}`
-            );
           }
         });
       }

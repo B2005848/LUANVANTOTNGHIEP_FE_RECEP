@@ -5,14 +5,11 @@
       <div class="title text-center">
         <h3>ĐĂNG KÍ KHÁM BỆNH</h3>
 
-        <p style="color: #6b6b6b; margin-top: 15px">
-          Bạn đã từng khám tại phòng khám Shine On You chưa?
-        </p>
+        <p style="color: #6b6b6b; margin-top: 15px">Chọn phương thức đăng kí</p>
 
         <div class="option__booking row">
           <div class="option__1 col-6">
-            <!-- <router-link :to="{ name: 'admin.create.booking.old' }"> -->
-            <router-link>
+            <router-link :to="{ name: 'create_appointment_old' }">
               <button
                 :style="corlorButtonCursor1"
                 @click="buttonCorsor1"
@@ -25,7 +22,7 @@
           </div>
 
           <div class="option__2 col-6">
-            <router-link>
+            <router-link :to="{ name: 'create_appointment_new' }">
               <button
                 @click="buttonCorsor2"
                 :style="corlorButtonCursor2"

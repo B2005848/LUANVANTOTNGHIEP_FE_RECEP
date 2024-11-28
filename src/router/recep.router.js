@@ -34,6 +34,27 @@ const recep = [
         meta: {
           title: "CTU CLINIC - Quản lí lịch hẹn",
         },
+        children: [
+          {
+            path: "old",
+            name: "create_appointment_old",
+            component: () =>
+              import("../pages/appointment_managements/booking_old.vue"),
+            meta: {
+              title: "CTU CLINIC - Đăng kí khám bệnh",
+            },
+          },
+
+          {
+            path: "new",
+            name: "create_appointment_new",
+            component: () =>
+              import("../pages/appointment_managements/booking_new.vue"),
+            meta: {
+              title: "CTU CLINIC - Đăng kí khám bệnh",
+            },
+          },
+        ],
       },
 
       {

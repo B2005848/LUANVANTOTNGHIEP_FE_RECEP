@@ -48,17 +48,6 @@
               </div>
             </form>
           </div>
-
-          <div class="flex-1">
-            <button type="button" title="Thêm nhân viên mới">
-              <font-awesome-icon
-                icon=" fa-plus"
-                bounce
-                size="lg"
-                style="color: #74c0fc"
-              />
-            </button>
-          </div>
         </div>
 
         <div style="display: flex; flex-direction: column; gap: 20px">

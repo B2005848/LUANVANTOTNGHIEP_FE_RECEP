@@ -54,6 +54,16 @@ const recep = [
               title: "CTU CLINIC - Đăng kí khám bệnh",
             },
           },
+
+          {
+            path: "slect_department/:patient_id",
+            name: "select.department",
+            component: () =>
+              import("../pages/appointment_managements/select_department.vue"),
+            meta: {
+              title: "CTU CLINIC - Đăng kí khám bệnh",
+            },
+          },
         ],
       },
 

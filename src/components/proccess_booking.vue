@@ -6,10 +6,22 @@
       </li>
       <li v-if="currentStep > 1">&gt;</li>
       <li @click="setStep(2)" :class="{ active: currentStep === 2 }">
-        Chọn dịch vụ khám
+        Chọn phòng khám
       </li>
       <li v-if="currentStep > 2">&gt;</li>
       <li @click="setStep(3)" :class="{ active: currentStep === 3 }">
+        Chọn dịch vụ
+      </li>
+      <li @click="setStep(4)" :class="{ active: currentStep === 4 }">
+        Chọn bác sĩ
+      </li>
+      <li @click="setStep(5)" :class="{ active: currentStep === 5 }">
+        Chọn ngày khám
+      </li>
+      <li @click="setStep(6)" :class="{ active: currentStep === 6 }">
+        Thanh toán
+      </li>
+      <li @click="setStep(7)" :class="{ active: currentStep === 7 }">
         Thanh toán
       </li>
     </ul>

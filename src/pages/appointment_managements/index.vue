@@ -103,6 +103,7 @@
                 <th scope="col" class="tw-px-6 tw-py-4">Ngày hẹn</th>
                 <th scope="col" class="tw-px-6 tw-py-4">Lí do khám</th>
                 <th scope="col" class="tw-px-6 tw-py-4">Dịch vụ khám</th>
+                <th scope="col" class="tw-px-6 tw-py-4">Thanh toán</th>
                 <th scope="col" class="tw-px-6 tw-py-4">Phòng tiếp nhận</th>
                 <th scope="col" class="tw-px-6 tw-py-4">Trạng thái</th>
                 <th scope="col" class="tw-px-6 tw-py-4">Hành động</th>
@@ -163,6 +164,19 @@
                 <!-- DỊCH VỤ KHÁM -->
                 <td class="px-6 py-4">{{ data.service_name }}</td>
 
+                <!-- Trạng thái thanh toán -->
+                <td class="px-6 py-4">
+                  <span class="text-warning" v-if="data.payment_status === 'X'">
+                    Chưa thanh toán
+                  </span>
+
+                  <span class="text-success" v-if="data.payment_status === 'C'">
+                    Đã thanh toán
+                  </span>
+
+                  <span v-if="data.payment_status === 'P'"> Đang xử lí </span>
+                </td>
+
                 <!-- PHÒNG TIẾP NHẬN  -->
                 <td class="px-6 py-4">
                   {{ data.department_id }} <br />
@@ -207,6 +221,7 @@
                     @change="
                       updateAppointmentStatus(
                         data.appointment_id,
+                        data.transaction_id,
                         data.selectedAction
                       )
                     "
@@ -266,7 +281,11 @@ const fetchDataByPage = async (page) => {
   await getData(page);
 };
 
-const updateAppointmentStatus = async (appointmentId, action) => {
+const updateAppointmentStatus = async (
+  appointmentId,
+  transaction_id,
+  action
+) => {
   if (!action) return; // Nếu không chọn hành động thì không làm gì
 
   // Hiển thị thông báo xác nhận
@@ -295,20 +314,44 @@ const updateAppointmentStatus = async (appointmentId, action) => {
         `http://localhost:3000/api/appointment/modifyStatus/${appointmentId}`,
         { status: action }
       );
-      Swal.fire(
-        "Thành công!",
-        `Lịch hẹn đã được ${
-          action === "C-IN" ? "xác nhận" : action === "CA" ? "hủy" : "dời lịch"
-        }.`,
-        "success"
-      );
+
+      // Nếu hành động là "Đã đến" (C-IN), gọi thêm API thứ hai
+      if (action === "C-IN") {
+        const checkInResponse = await axios.put(
+          `http://localhost:3000/api/statistics/revenue/update-status/${transaction_id}`,
+          { newStatus: "C" } // Dữ liệu có thể thay đổi tùy theo API
+        );
+
+        // Kiểm tra kết quả của API thứ hai
+        if (checkInResponse.status === 200) {
+          Swal.fire(
+            "Thành công!",
+            "Lịch hẹn đã được xác nhận và bệnh nhân đã được ghi nhận đã thanh toán.",
+            "success"
+          );
+        } else {
+          throw new Error("Có lỗi khi xác nhận bệnh nhân đã đến.");
+        }
+      } else {
+        Swal.fire(
+          "Thành công!",
+          `Lịch hẹn đã được ${
+            action === "C-IN"
+              ? "xác nhận"
+              : action === "CA"
+              ? "hủy"
+              : "dời lịch"
+          }.`,
+          "success"
+        );
+      }
 
       // Cập nhật lại danh sách lịch hẹn sau khi thay đổi trạng thái
       fetchDataByPage(currentPage.value); // Tải lại dữ liệu từ server
     } catch (error) {
       Swal.fire(
         "Lỗi!",
-        "Có lỗi xảy ra khi cập nhật trạng thái lịch hẹn.",
+        error.message || "Có lỗi xảy ra khi cập nhật trạng thái lịch hẹn.",
         "error"
       );
     }

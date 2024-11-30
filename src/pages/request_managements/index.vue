@@ -160,6 +160,9 @@ onBeforeUnmount(() => {
   justify-content: space-between;
   padding: 10px;
   cursor: pointer;
+  border: #9ee2f4 1px solid;
+  margin: 20px;
+  border-radius: 14px;
 }
 .chat-item:hover {
   padding: 10px;

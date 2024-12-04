@@ -91,7 +91,7 @@ const recep = [
 
           // Step 3: Chọn bác sĩ
           {
-            path: "slect_service/:patient_id/:department_id/:service_id",
+            path: "slect_service/:patient_id/:department_id/:service_id/:specialty_id",
             name: "select.doctor",
             component: () =>
               import("../pages/appointment_managements/slelect_doctor.vue"),

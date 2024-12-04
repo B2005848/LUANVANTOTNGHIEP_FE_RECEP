@@ -9,8 +9,7 @@
         <li>Chọn dịch vụ</li>
         <li>&gt;</li>
         <li>Chọn bác sĩ</li>
-        <li>&gt;</li>
-        <li>Chọn ngày khám</li>
+
         <li>&gt;</li>
         <li>Thanh toán</li>
       </ul>

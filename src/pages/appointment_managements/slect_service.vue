@@ -10,8 +10,6 @@
         <li>&gt;</li>
         <li>Chọn bác sĩ</li>
         <li>&gt;</li>
-        <li>Chọn ngày khám</li>
-        <li>&gt;</li>
         <li>Thanh toán</li>
       </ul>
     </div>
@@ -88,7 +86,7 @@ const confirmSelection = () => {
   );
   // Tiến hành chọn dịch vụ hoặc chuyển bước tiếp theo
   router.push({
-    name: "select.service",
+    name: "select.doctor",
     params: {
       patient_id: patient_id,
       department_id: department_id,

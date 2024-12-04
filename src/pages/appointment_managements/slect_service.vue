@@ -4,9 +4,9 @@
       <ul class="ul__list d-flex">
         <li>Tạo hồ sơ</li>
         <li>&gt;</li>
-        <li class="active">Chọn phòng khám</li>
+        <li>Chọn phòng khám</li>
         <li>&gt;</li>
-        <li>Chọn dịch vụ</li>
+        <li class="active">Chọn dịch vụ</li>
         <li>&gt;</li>
         <li>Chọn bác sĩ</li>
         <li>&gt;</li>
@@ -16,46 +16,34 @@
       </ul>
     </div>
     <div class="card p-4">
-      <h4 class="text-center">Chọn Phòng Khám</h4>
+      <h4 class="text-center">Chọn dịch vụ khám</h4>
 
       <!-- Danh sách Phòng Khám -->
-      <div v-if="departments.length">
-        <div
-          v-for="department in departments"
-          :key="department.department_id"
-          class="mb-3"
-        >
+      <div v-if="services.length">
+        <div v-for="service in services" :key="service.service_id" class="mb-3">
           <button
             :class="[
               'btn',
               'w-100',
-              department.department_id === selectedDepartment?.department_id
+              service.service_id === selectedservice?.service_id
                 ? 'selected'
                 : 'btn-outline-primary',
             ]"
-            @click="selectDepartment(department)"
+            @click="selectservice(service)"
           >
-            {{ department.department_name }}
+            {{ service.service_name }}
+            {{ formatCurrency(service.service_fee) }}
           </button>
-        </div>
-
-        <!-- Phân trang -->
-        <div class="d-flex justify-content-between mt-4">
-          <PaginationComponent
-            :pageCount="totalPages"
-            :currentPage="currentPage"
-            @page-change="fetchDataByPage"
-          />
         </div>
       </div>
 
       <!-- Xác nhận -->
-      <div v-if="selectedDepartment">
+      <div v-if="selectedservice">
         <div class="alert alert-info mt-4">
-          Bạn đã chọn: <strong>{{ selectedDepartment.department_name }}</strong>
+          Bạn đã chọn: <strong>{{ selectedservice.service_name }}</strong>
         </div>
         <button class="btn btn-success w-100" @click="confirmSelection">
-          Tiến hành chọn dịch vụ
+          Tiến hành chọn bác sĩ
         </button>
       </div>
     </div>
@@ -66,54 +54,52 @@
 import { ref, onMounted } from "vue";
 import axios from "axios";
 import { useRouter, useRoute } from "vue-router";
-import PaginationComponent from "@/components/Pagination.vue";
+import { formatCurrency } from "@/helper/currencyFormatter";
+
 const router = useRouter();
 const route = useRoute();
-const departments = ref([]);
-const selectedDepartment = ref(null);
-const currentPage = ref(1);
-const totalPages = ref(1);
-
+const services = ref([]);
+const selectedservice = ref(null);
 const patient_id = route.params.patient_id;
-// Hàm tải danh sách phòng khám theo trang
-const loadDepartments = async (page) => {
+const department_id = route.params.department_id;
+// Hàm tải dịch vụ
+const loadservices = async () => {
   try {
     const response = await axios.get(
-      `http://localhost:3000/api/departments/getListForPatient/?page=${page}`
+      `http://localhost:3000/api/services/getService/${department_id}`
     );
-    departments.value = response.data.listDepartments;
-    totalPages.value = response.data.totalPages;
-    currentPage.value = page;
+    services.value = response.data.dataInfo;
   } catch (error) {
-    console.error("Lỗi khi tải danh sách phòng khám:", error);
+    console.error("Lỗi khi tải danh sách dịch vụ:", error);
   }
 };
 
-// Chọn phòng khám
-const selectDepartment = (department) => {
-  selectedDepartment.value = department;
+// Chọn dịch vụ
+const selectservice = (service) => {
+  selectedservice.value = service;
 };
 
-// Xác nhận phòng khám đã chọn
+// Xác nhận dịch vụ đã chọn
 const confirmSelection = () => {
-  console.log("ID Phòng Khám Đã Chọn:", selectedDepartment.value.department_id);
+  console.log("ID Dịch Vụ Đã Chọn:", selectedservice.value.service_id);
+  console.log(
+    "ID Chuyên Khoa Dịch Vụ Đã Chọn",
+    selectedservice.value.specialty_id
+  );
   // Tiến hành chọn dịch vụ hoặc chuyển bước tiếp theo
   router.push({
     name: "select.service",
     params: {
       patient_id: patient_id,
-      department_id: selectedDepartment.value.department_id,
+      department_id: department_id,
+      service_id: selectedservice.value.service_id,
+      specialty_id: selectedservice.value.specialty_id,
     },
   });
 };
 
-// Hàm xử lý khi chuyển trang
-const fetchDataByPage = (newPage) => {
-  loadDepartments(newPage);
-};
-
 onMounted(() => {
-  loadDepartments(currentPage.value);
+  loadservices();
 });
 </script>
 
@@ -136,6 +122,7 @@ onMounted(() => {
   border-color: #007bff;
   color: #007bff;
 }
+
 .ul__list {
   list-style: none;
   display: flex;

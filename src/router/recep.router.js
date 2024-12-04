@@ -55,13 +55,48 @@ const recep = [
             },
           },
 
+          // QUY TRÌNH ĐĂNG KÍ KHÁM BỆNH TẠI PHÒNG KHÁM
+          // step 1: chọn phòng khám
           {
             path: "slect_department/:patient_id",
             name: "select.department",
             component: () =>
               import("../pages/appointment_managements/select_department.vue"),
             meta: {
-              title: "CTU CLINIC - Đăng kí khám bệnh",
+              title: "CTU CLINIC - Chọn phòng khám",
+            },
+          },
+
+          // Step 2: chọn dịch vụ khám
+          {
+            path: "slect_service/:patient_id/:department_id",
+            name: "select.service",
+            component: () =>
+              import("../pages/appointment_managements/slect_service.vue"),
+            meta: {
+              title: "CTU CLINIC - Chọn dịch vụ",
+            },
+          },
+
+          // Step 2: chọn dịch vụ khám
+          {
+            path: "slect_service/:patient_id/:department_id",
+            name: "select.service",
+            component: () =>
+              import("../pages/appointment_managements/slect_service.vue"),
+            meta: {
+              title: "CTU CLINIC - Chọn dịch vụ",
+            },
+          },
+
+          // Step 3: Chọn bác sĩ
+          {
+            path: "slect_service/:patient_id/:department_id/:service_id",
+            name: "select.doctor",
+            component: () =>
+              import("../pages/appointment_managements/slelect_doctor.vue"),
+            meta: {
+              title: "CTU CLINIC - Chọn bác sĩ",
             },
           },
         ],

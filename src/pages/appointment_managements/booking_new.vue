@@ -1,5 +1,20 @@
 <template>
   <div class="container-fluid mt-3">
+    <div>
+      <ul class="ul__list d-flex">
+        <li class="active">Tạo hồ sơ</li>
+        <li>&gt;</li>
+        <li>Chọn phòng khám</li>
+        <li>&gt;</li>
+        <li>Chọn dịch vụ</li>
+        <li>&gt;</li>
+        <li>Chọn bác sĩ</li>
+        <li>&gt;</li>
+        <li>Chọn ngày khám</li>
+        <li>&gt;</li>
+        <li>Thanh toán</li>
+      </ul>
+    </div>
     <div class="card p-4">
       <h4 class="text-center">Thông tin cơ bản của bệnh nhân</h4>
       <form @submit.prevent="addpatient" class="mt-4">
@@ -443,5 +458,21 @@ onMounted(() => {
 
 .modal-lg {
   max-width: 80%;
+}
+
+.ul__list {
+  list-style: none;
+  display: flex;
+  margin-top: 20px;
+}
+
+.ul__list li {
+  margin: 10px;
+}
+
+.ul__list li.active {
+  font-weight: bold; /* Thay đổi style khi active */
+  color: #007bff; /* Màu sắc khi active */
+  cursor: pointer; /* Chỉnh con trỏ thành dấu chấm khi di chuột */
 }
 </style>

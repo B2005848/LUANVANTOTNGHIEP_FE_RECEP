@@ -267,7 +267,41 @@ import formatDate from "@/helper/format-datetime";
 const formatDateTime = formatDate.formatDateTime;
 const formatDay = formatDate.formatDateBirth;
 import Swal from "sweetalert2";
+import { useRoute, useRouter } from "vue-router";
+const route = useRoute();
+const router = useRouter();
 
+// Hàm hiển thị thông báo
+const checkUrlAndNotify = () => {
+  const status = route.query.status; // Lấy giá trị 'status' từ query string
+  const transactionId = route.query.transactionId; // Lấy giá trị 'transactionId' từ query string
+
+  if (status && transactionId) {
+    // Nếu có status và transactionId, hiển thị thông báo
+    if (status === "success") {
+      Swal.fire({
+        icon: "success",
+        title: "Đặt lịch thành công",
+        text: `Giao dịch thành công! Mã giao dịch: ${transactionId}`,
+      });
+    } else if (status === "failure") {
+      Swal.fire({
+        icon: "error",
+        title: "Đặt lịch không thành công",
+        text: `Giao dịch thất bại! Mã giao dịch: ${transactionId}`,
+      });
+    }
+
+    // Xóa các giá trị status và transactionId khỏi URL để tránh lặp lại thông báo
+    router.replace({
+      query: { ...route.query, status: undefined, transactionId: undefined },
+    });
+  }
+};
+// Kiểm tra URL ngay khi component được gọi
+onMounted(() => {
+  checkUrlAndNotify();
+});
 const {
   getData,
   listAppointmentsData,

@@ -169,6 +169,8 @@
                   </span>
 
                   <span v-if="data.payment_status === 'P'"> Đang xử lí </span>
+
+                  <span v-if="data.payment_status === 'H'"> Đã hoàn tiền </span>
                 </td>
 
                 <!-- PHÒNG TIẾP NHẬN  -->
@@ -331,20 +333,27 @@ const updateAppointmentStatus = async (
         } else {
           throw new Error("Có lỗi khi xác nhận bệnh nhân đã đến.");
         }
+      }
+      if (action === "CA") {
+        const checkInResponse = await axios.put(
+          `http://localhost:3000/api/statistics/revenue/update-status/${transaction_id}`,
+          { newStatus: "H" } // Dữ liệu có thể thay đổi tùy theo API
+        );
+
+        // Kiểm tra kết quả của API thứ hai
+        if (checkInResponse.status === 200) {
+          Swal.fire(
+            "Thành công!",
+            "Lịch hẹn đã được xác nhận hủy thành công",
+            "success"
+          );
+        } else {
+          throw new Error("Có lỗi khi xác nhận hủy lịch hẹn");
+        }
       } else {
         Swal.fire(
           "Thành công!",
-          `Lịch hẹn đã được ${
-            action === "CO-F"
-              ? "xác nhận"
-              : action === "CA"
-              ? "hủy"
-              : action === "C-IN"
-              ? "xác nhận bệnh nhân đã đến khám"
-              : action === "NO-S"
-              ? "xác nhận bệnh nhân 'KHÔNG ĐẾN HẸN với'"
-              : ""
-          }.`,
+          `Lịch hẹn đã được ${action === "C-IN" ? "xác nhận" : "dời lịch"}.`,
           "success"
         );
       }
